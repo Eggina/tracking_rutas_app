@@ -1,0 +1,26 @@
+#content {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#info {
+    flex-grow: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.item {
+    flex-grow: 1;
+    margin: 0;
+}
+
+#body {
+    flex-grow: 1;
+}
+
+#footer {
+    flex-grow: 0;
+    height: 10vh;
+}

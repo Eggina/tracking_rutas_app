@@ -1,0 +1,63 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/historial"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ruta.nombre}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div id="content">
+
+    <div id="info">
+      <ion-item>
+        <ion-label>
+          <p>Inicio</p>
+          <h2>{{inicio.toLocaleString()}}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Duración</p>
+          <h2>{{persServ.tiempoString(duracion)}}</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+
+        <ion-label>
+          <p>Distacia</p>
+          <h2>{{distancia.toFixed(3)}} km</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Velocidad media</p>
+          <h2>{{rapidez.toFixed(3)}} km/h</h2>
+        </ion-label>
+      </ion-item>
+
+      <ion-item>
+        <ion-label>
+          <p>Ritmo medio</p>
+          <h2>{{ritmo.toFixed(2)}} min/km</h2>
+        </ion-label>
+      </ion-item>
+
+    </div>
+
+
+    <div id="body">
+      <div id="map-canvas"></div>
+    </div>
+
+    <div id="footer">
+
+    </div>
+
+  </div>
+
+</ion-content>

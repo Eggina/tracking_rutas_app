@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/home"></ion-back-button>
+    </ion-buttons>
+
+    <ion-title>Historial</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-item>
+    <ion-button (click)="limpiarCache()" expand="block" fill="clear" shape="round">
+      Limpiar caché
+    </ion-button>
+  </ion-item>
+
+  <ion-list class="lista1">
+    <ion-item *ngFor="let ruta of historial" [routerLink]="['/historial', ruta.idruta]">
+      <ion-label>{{ruta.nombre}}</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-list class="lista2">
+    <ion-item *ngFor="let ruta of historial" class="boton">
+      <ion-button (click)="eliminarRuta(ruta.idruta)" expand="block" fill="clear" shape="round" color="danger">
+        <ion-icon slot="icon-only" name="trash-outline"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+</ion-content>
