@@ -1,4 +1,4 @@
-import { erf, sqrt, cos, asin, pi, pow } from 'mathjs/number'
+import { erf, sqrt, cos, asin, pi, pow, abs } from 'mathjs/number'
 
 export class Posicion {
 
@@ -45,7 +45,7 @@ export class Posicion {
     let z = u / s;
 
     // ¿Las mediciones son diferentes? Significancia del 5%
-    if ((z < -c) || z > c) {
+    if (abs(z) > c) {
       return true;
     }
 
@@ -56,7 +56,7 @@ export class Posicion {
     z = u / s;
 
     // ¿Las mediciones son diferentes? Significancia del 5%
-    if ((z < -c) || z > c) {
+    if (abs(z) > c) {
       return true;
     }
 

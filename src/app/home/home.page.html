@@ -1,20 +1,61 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Inicio
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <div>
+    <ion-item class="bloque">
+      <ion-label position="stacked" color="medium">
+        <h2>Nombre</h2>
+      </ion-label>
+      <ion-input type="text" [(ngModel)]="nombre" placeholder="Ruta 1" [disabled]="!conmutador"></ion-input>
+    </ion-item>
   </div>
+
+  <div class="grupo">
+
+    <div class="bloque">
+
+      <ion-button shape="round" (click)="comenzarCronometro(); conmutarBotones(); comenzarRegistro()" *ngIf=conmutador
+        [disabled]="nombre==undefined || nombre==''" expand="block" size="large" fill="clear">
+        <ion-icon name="play-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button shape="round" (click)="pararCronometro(); conmutarBotones(); pararRegistro()" *ngIf=!conmutador
+        color="danger" expand="block" size="large" fill="clear">
+        <ion-icon name="stop-outline"></ion-icon>
+      </ion-button>
+
+      <ion-button shape="round" (click)="guardarRuta()" *ngIf="conmutador && ruta !=null && guardar" color="success" expand="block"
+        size="large" fill="clear">
+        <ion-icon name="save-outline"></ion-icon>
+      </ion-button>
+
+    </div>
+
+    <div class="bloque tiempo">
+      <ion-label>{{persServ.tiempoString(tiempo)}}</ion-label>
+    </div>
+
+    <div class="bloque tiempo">
+      <ion-label>{{distancia.toFixed(3)}} km</ion-label>
+    </div>
+
+    <div class="bloque tiempo">
+      <ion-label>{{ritmo.toFixed(2)}} min/km</ion-label>
+    </div>
+
+  </div>
+
+  <ion-item>
+    <ion-button (click)="irAlHistorial()" expand="block" fill="clear" shape="round" [disabled]="!conmutador">
+      Historial
+    </ion-button>
+  </ion-item>
+
 </ion-content>
