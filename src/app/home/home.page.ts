@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Geolocation, Geoposition, PositionError } from '@ionic-native/geolocation/ngx';
-import { Posicion } from 'src/app/model/posicion';
-import { Ruta } from 'src/app/model/ruta';
+import { Posicion } from '../model/posicion';
+import { Ruta } from '../model/ruta';
 import { PersistenciaService } from '../services/persistencia.service';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
