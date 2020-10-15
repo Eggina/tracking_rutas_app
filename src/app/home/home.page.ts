@@ -4,7 +4,7 @@ import { Posicion } from 'src/app/model/posicion';
 import { Ruta } from 'src/app/model/ruta';
 import { PersistenciaService } from '../services/persistencia.service';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 declare var cordova: any;
 
@@ -17,21 +17,16 @@ declare var cordova: any;
 export class HomePage {
 
   private conmutador: boolean = true;
-
   private nombre: string;
-
   private inicio: DOMTimeStamp = 0;
   private tiempo: DOMTimeStamp = 0;
-
-  private ruta: Ruta;
   private intervaloCronometro;
-
   private obsPosition: Subscription;
-
-  private distancia: number = 0;
-  private ritmo: number = 0;
-
   private guardar: boolean = false;
+
+  ruta: Ruta;
+  distancia: number = 0;
+  ritmo: number = 0;
 
   constructor(private geolocation: Geolocation, private persServ: PersistenciaService, private router: Router) {
     document.addEventListener('deviceready', () => {
@@ -62,8 +57,6 @@ export class HomePage {
   }
 
   private comenzarRegistro() {
-    this.ruta = new Ruta();
-    this.ruta.nombre = this.nombre;
 
     const options = {
       enableHighAccuracy: true,
@@ -71,19 +64,29 @@ export class HomePage {
       timeout: Infinity
     };
 
-    this.obsPosition = this.geolocation.watchPosition(options).subscribe((pos: Geoposition) => {
-      const posicion: Posicion = new Posicion();
-      posicion.establecerPosicion(pos.coords.latitude,
-        pos.coords.longitude,
-        pos.coords.accuracy,
-        pos.timestamp);
-      this.ruta.ExtenderRuta(posicion);
-      this.distancia = this.ruta.calcularDistanciaTotal() / 1000;
-      this.ritmo = 1 / (this.ruta.calcularRapidezMedia() * 60);
-      console.log(this.ruta);
+    // Posición inicial
+    let promesaPos: Promise<Geoposition> = this.geolocation.getCurrentPosition(options);
+    promesaPos.then((pos) => {
+      this.ruta = new Ruta();
+      this.ruta.nombre = this.nombre;
+      this.registrarPosicion(pos);
     });
-
+    // Seguimiento
+    promesaPos.finally(() => { this.obsPosition = this.geolocation.watchPosition(options).subscribe(this.registrarPosicion.bind(this)) });
   }
+
+  registrarPosicion(pos: Geoposition): void {
+    const posicion: Posicion = new Posicion();
+    posicion.establecerPosicion(pos.coords.latitude,
+      pos.coords.longitude,
+      pos.coords.accuracy,
+      pos.timestamp);
+    this.ruta.ExtenderRuta(posicion);
+    this.distancia = this.ruta.calcularDistanciaTotal() / 1000;
+    this.ritmo = 1 / (this.ruta.calcularRapidezMedia() * 60);
+    console.log(this.ruta);
+  }
+
 
   private pararRegistro() {
     this.obsPosition.unsubscribe();
