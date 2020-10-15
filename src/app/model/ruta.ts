@@ -30,7 +30,7 @@ export class Ruta {
     return (this.ruta.length > 1);
   }
 
-  public ExtenderRuta(posicion: Posicion) {
+  public extenderRuta(posicion: Posicion) {
     if (this.ruta.length > 0) {
       if (this.obtenerFin().verificarDiferencia(posicion)) {
         this.ruta.push(posicion);

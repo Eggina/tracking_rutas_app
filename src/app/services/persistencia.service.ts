@@ -56,7 +56,7 @@ export class PersistenciaService {
         var ruta = new Ruta();
         ruta.nombre = ruta_json.nombre;
         for (let pos of JSON.parse(ruta_json.ruta)) {
-          ruta.ExtenderRuta(Object.assign(new Posicion(), pos));
+          ruta.extenderRuta(Object.assign(new Posicion(), pos));
         }
         resolve(ruta);
       }, (err) => {
@@ -72,7 +72,7 @@ export class PersistenciaService {
     let ruta_json = JSON.parse(ruta_str);
     ruta.nombre = ruta_json.nombre;
     for (let pos of ruta_json.ruta) {
-      ruta.ExtenderRuta(Object.assign(new Posicion(), pos));
+      ruta.extenderRuta(Object.assign(new Posicion(), pos));
     }
     return ruta;
   }

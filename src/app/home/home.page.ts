@@ -16,13 +16,13 @@ declare var cordova: any;
 
 export class HomePage {
 
-  private conmutador: boolean = true;
-  private nombre: string;
-  private inicio: DOMTimeStamp = 0;
-  private tiempo: DOMTimeStamp = 0;
-  private intervaloCronometro;
-  private obsPosition: Subscription;
-  private guardar: boolean = false;
+  conmutador: boolean = true;
+  nombre: string;
+  inicio: DOMTimeStamp = 0;
+  tiempo: DOMTimeStamp = 0;
+  intervaloCronometro;
+  subsPosition: Subscription;
+  guardar: boolean = false;
 
   ruta: Ruta;
   distancia: number = 0;
@@ -56,7 +56,7 @@ export class HomePage {
     clearInterval(this.intervaloCronometro);
   }
 
-  private comenzarRegistro() {
+  private async comenzarRegistro() {
 
     const options = {
       enableHighAccuracy: true,
@@ -65,27 +65,21 @@ export class HomePage {
     };
 
     // Posición inicial
-    let promesaPos: Promise<Geoposition> = this.geolocation.getCurrentPosition(options);
-    promesaPos.then((pos) => {
-      this.ruta = new Ruta();
-      this.ruta.nombre = this.nombre;
-      this.registrarPosicion(pos);
-      this.obsPosition = this.geolocation.watchPosition(options).subscribe(this.registrarPosicion.bind(this));
-    });
-    // Parar en caso de falla
-    promesaPos.catch(() => {
-      this.conmutarBotones();
-      this.pararCronometro();
-    });
+    this.ruta = new Ruta();
+    this.ruta.nombre = this.nombre;
+    let pos: Geoposition = await this.geolocation.getCurrentPosition(options);
+    this.registrarPosicion(pos);
+    // Seguimiento
+    this.subsPosition = this.geolocation.watchPosition(options).subscribe((pos: Geoposition) => this.registrarPosicion(pos));
   }
 
   registrarPosicion(pos: Geoposition): void {
-    const posicion: Posicion = new Posicion();
+    let posicion: Posicion = new Posicion();
     posicion.establecerPosicion(pos.coords.latitude,
       pos.coords.longitude,
       pos.coords.accuracy,
       pos.timestamp);
-    this.ruta.ExtenderRuta(posicion);
+    this.ruta.extenderRuta(posicion);
     this.distancia = this.ruta.calcularDistanciaTotal() / 1000;
     this.ritmo = 1 / (this.ruta.calcularRapidezMedia() * 60);
     console.log(this.ruta);
@@ -93,7 +87,7 @@ export class HomePage {
 
 
   private pararRegistro() {
-    this.obsPosition.unsubscribe();
+    this.subsPosition.unsubscribe();
     this.guardar = this.ruta.esValida();
   }
 
