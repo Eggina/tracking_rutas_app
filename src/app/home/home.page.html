@@ -21,18 +21,18 @@
 
     <div class="bloque">
 
-      <ion-button shape="round" (click)="comenzarCronometro(); conmutarBotones(); comenzarRegistro()" *ngIf=conmutador
+      <ion-button shape="round" (click)="comenzarCronometro(); comenzarRegistro(); conmutarBotones()" *ngIf=conmutador
         [disabled]="nombre==undefined || nombre==''" expand="block" size="large" fill="clear">
         <ion-icon name="play-outline"></ion-icon>
       </ion-button>
 
-      <ion-button shape="round" (click)="pararCronometro(); conmutarBotones(); pararRegistro()" *ngIf=!conmutador
+      <ion-button shape="round" (click)="pararCronometro(); pararRegistro(); conmutarBotones()" *ngIf=!conmutador
         color="danger" expand="block" size="large" fill="clear">
         <ion-icon name="stop-outline"></ion-icon>
       </ion-button>
 
-      <ion-button shape="round" (click)="guardarRuta()" *ngIf="conmutador && ruta !=null && guardar" color="success" expand="block"
-        size="large" fill="clear">
+      <ion-button shape="round" (click)="guardarRuta()" *ngIf="conmutador && ruta !=null && guardar" color="success"
+        expand="block" size="large" fill="clear">
         <ion-icon name="save-outline"></ion-icon>
       </ion-button>
 
