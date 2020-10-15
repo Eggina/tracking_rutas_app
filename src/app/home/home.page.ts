@@ -70,9 +70,13 @@ export class HomePage {
       this.ruta = new Ruta();
       this.ruta.nombre = this.nombre;
       this.registrarPosicion(pos);
+      this.obsPosition = this.geolocation.watchPosition(options).subscribe(this.registrarPosicion.bind(this));
     });
-    // Seguimiento
-    promesaPos.finally(() => { this.obsPosition = this.geolocation.watchPosition(options).subscribe(this.registrarPosicion.bind(this)) });
+    // Parar en caso de falla
+    promesaPos.catch(() => {
+      this.conmutarBotones();
+      this.pararCronometro();
+    });
   }
 
   registrarPosicion(pos: Geoposition): void {
